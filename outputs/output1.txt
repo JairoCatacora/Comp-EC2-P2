@@ -20,20 +20,20 @@ movl $0, %eax
 setl %al
 movzbq %al, %rax
 cmpq $0, %rax
-je else
+je else1
 movq $10, %rax
 movq %rax, %rsi
 leaq print_fmt(%rip), %rdi 
 movl $0, %eax 
 call printf@PLT
-jmp endif
-else:
+jmp endif1
+else1:
 movq $20, %rax
 movq %rax, %rsi
 leaq print_fmt(%rip), %rdi 
 movl $0, %eax 
 call printf@PLT
-endif:
+endif1:
 leave
 ret
 .section .note.GNU-stack,"",@progbits

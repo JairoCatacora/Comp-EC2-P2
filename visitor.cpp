@@ -156,8 +156,28 @@ int GencodeVisitor::visit(BinaryExp* exp) {
         cout << "setl %al" << endl;
         cout << "movzbq %al, %rax" << endl; // deja en el rax 1 si es true , 0 caso contrario
         break;
-
-
+        case MAYOR_OP:
+            exp->left->accept(this);
+            cout << "pushq %rax" << endl;
+            exp->right->accept(this);
+            cout << "movq %rax, %rcx" << endl;
+            cout << "popq %rax" << endl;
+            cout << "cmpq %rcx, %rax" << endl;
+            cout << "movl $0, %eax"<< endl;
+            cout << "setg %al" << endl;
+            cout << "movzbq %al, %rax" << endl;
+            break;
+        case EQUAL_OP:
+            exp->left->accept(this);
+            cout << "pushq %rax" << endl;
+            exp->right->accept(this);
+            cout << "movq %rax, %rcx" << endl;
+            cout << "popq %rax" << endl;
+            cout << "cmpq %rcx, %rax" << endl;
+            cout << "movl $0, %eax"<< endl;
+            cout << "sete %al" << endl;
+            cout << "movzbq %al, %rax" << endl;
+            break;
         default:
             cout << "Operador desconocido" << endl;
 
@@ -168,7 +188,16 @@ int GencodeVisitor::visit(BinaryExp* exp) {
 }
 
 void GencodeVisitor::visit(WhileStm* stm) {
-
+    int count = ++this->contadorWhile;
+    cout << "WHILE" + to_string(count) + ":" << endl;
+    stm->condicion->accept(this);
+    cout << "cmpq $0, %rax" << endl;
+    cout << "je ENDWHILE" + to_string(count) << endl;
+    for (auto i: stm->stlist) {
+        i->accept(this);
+    }
+    cout << "jmp WHILE" + to_string(count) << endl;
+    cout << "ENDWHILE" + to_string(count) << ":" << endl;
 }
 
 int GencodeVisitor::visit(NumberExp* exp) {
@@ -205,18 +234,19 @@ void GencodeVisitor::visit(PrintStm* stm) {
 }
 
 void GencodeVisitor::visit(IfStm* stm) {
+    int count = ++this->contadorIf;
     stm->condicion->accept(this);
     cout << "cmpq $0, %rax" << endl;
-    cout << "je else" << endl;
+    cout << "je else" + to_string(count) << endl;
     for(auto i:stm->slist1){
         i->accept(this);
     }
-    cout << "jmp endif" << endl;
-    cout << "else:" << endl;
+    cout << "jmp endif" + to_string(count) << endl;
+    cout << "else" + to_string(count) + ":" << endl;
     for(auto i:stm->slist2){
         i->accept(this);
     }
-    cout << "endif:" << endl;
+    cout << "endif" + to_string(count) + ":" << endl;
 }
 
 void GencodeVisitor::code(Program* program){

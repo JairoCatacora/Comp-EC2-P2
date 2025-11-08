@@ -130,6 +130,16 @@ Exp* Parser::parseCE() {
         Exp* r = parseBE();
         l = new BinaryExp(l, r, op);
     }
+    else if (match(Token::MAYOR)) {
+        BinaryOp op = MAYOR_OP;
+        Exp* r = parseBE();
+        l = new BinaryExp(l, r, op);
+    }
+    else if (match(Token::EQUAL)) {
+        BinaryOp op = EQUAL_OP;
+        Exp* r = parseBE();
+        l = new BinaryExp(l, r, op);
+    }
     return l;
 }
 

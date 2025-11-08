@@ -32,6 +32,8 @@ public:
         ENDIF,
         ENDWHILE,
         ELSE,
+        MAYOR,
+        EQUAL,
         END      // Fin de entrada
     };
 

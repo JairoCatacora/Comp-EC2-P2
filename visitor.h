@@ -27,13 +27,15 @@ class GencodeVisitor : public Visitor {
 public:
     unordered_map<string, int> env;
     int contador = 1;
+    int contadorIf = 0;
+    int contadorWhile = 0;
     void code(Program* program);
     int visit(BinaryExp* exp) override;
     int visit(NumberExp* exp) override;
     int visit(IdExp* exp) override;
     void visit(AssignStm* stm) override;
     void visit(IfStm* stm) override;
-        void visit(WhileStm* stm) override;
+    void visit(WhileStm* stm) override;
     void visit(PrintStm* stm) override;
 };
 
@@ -43,11 +45,10 @@ public:
     int visit(BinaryExp* exp) override;
     int visit(NumberExp* exp) override;
     int visit(IdExp* exp) override;
-        void visit(WhileStm* stm) override;
+    void visit(WhileStm* stm) override;
     void visit(AssignStm* stm) override;
     void visit(PrintStm* stm) override;
-   void visit(IfStm* stm) override;
-
+    void visit(IfStm* stm) override;
 };
 
 class EVALVisitor : public Visitor {
@@ -56,11 +57,10 @@ public:
     int visit(BinaryExp* exp) override;
     int visit(NumberExp* exp) override;
     int visit(IdExp* exp) override;
-        void visit(WhileStm* stm) override;
+    void visit(WhileStm* stm) override;
     void visit(AssignStm* stm) override;
     void visit(PrintStm* stm) override;
-   void visit(IfStm* stm) override;
-
+    void visit(IfStm* stm) override;
 };
 
 #endif // VISITOR_H
